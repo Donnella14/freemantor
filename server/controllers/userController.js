@@ -1,7 +1,32 @@
 import UserInfo from "../models/userModel.js";
-
+import TokenAuth from "../helpers/TokenAuth.js";
 
 class UserController{
+    static signinUser = async(req,res)=>{
+        const {email,password} = req.body;
+        const user= await UserInfo.findOne({email: email, password: password});
+        if (!user){
+            return res.status(400).json({
+                status:400,
+                message:"not found"
+            })
+        }
+        const token = TokenAuth.tokenGenarator({
+            id:user._id,
+            email:user.email,
+            status:user.status,
+            role:user.role
+        }) 
+        return res.status(200).json({
+            status:200,
+            message:"sgnin successfully",
+            token:token,
+            data:user
+        })
+
+
+    }
+
     static signupUser = async(req,res)=>{
         const user = await UserInfo.create(req.body);
         if(!user){
@@ -73,14 +98,35 @@ class UserController{
                 })
             
             }
-           // const updated = await UserInfo.find();
+            const updated = await UserInfo.findById(req.params.id);
             return res.status(200).json({
                 status:200,
                 message:"success to update",
-                data:update
-                //data:updated
+                //data:update
+                data:updated
             })
         }
+        static updateOneUserRole = async (req,res)=>{
+            const data= await UserInfo.findById(req.params.id);
+            let role;
+            if (data.role=="user"){
+                role="mentor";
+            }
+            else(role="user");
+            const user= await UserInfo.findByIdAndUpdate(req.params.id, {role:role});
+            if(!user){
+                return res.status(404).json({
+                    status:404,
+                    message:"not found"
+                })
+            }
+            const updateUser = await UserInfo.findById(req.params.id);
+            return res.status(200).json({
+                status:200,
+                message:"successfully changed",
+                data:updateUser
+            })
+        } 
 }
 
 
