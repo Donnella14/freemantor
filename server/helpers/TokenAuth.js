@@ -7,5 +7,9 @@ class TokenAuth{
         const token = jwt.sign(data,process.env.JWTKEY,{expiresIn:"1d"});
         return token;
     }
+    static getData(token){
+        const data= jwt.verify(token,process.env.JWTKEY);
+        return data;
+    }
 }
 export default TokenAuth;

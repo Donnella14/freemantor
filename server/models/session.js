@@ -1,10 +1,10 @@
 import mongoose  from "mongoose";
 
 const Session = new mongoose.Schema({
-    title: String,
+    title: {type:String,required:[true,"The title is required"]},
     description: String,
-    user:String,
-    mentor:String,
+    user:{type:mongoose.Schema.ObjectId, ref:"user"},
+    mentor:{type:mongoose.Schema.ObjectId, ref:"user"},
     timeToStart:String,
     timeToEnd:String,
     status:{
