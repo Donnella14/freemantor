@@ -1,12 +1,13 @@
 import express from "express";
 import SessionController from "../controllers/sessionContoller.js";
-
+import verifyToken from "../middleware/verifyToken.js";
+import verifyAccess from "../middleware/verifyAccess.js";
 const sessionRouter= express.Router();
-sessionRouter.post("/signup",SessionController.signup);
-sessionRouter.get("/all", SessionController.getAll);
-sessionRouter.patch("/:id/status", SessionController.updateSessionStatus);
-sessionRouter.patch("/decline/:id/status", SessionController.updateSessionStatusDecl);
-sessionRouter.patch("/:id", SessionController.updateSession);
-sessionRouter.get("/:id", SessionController.getOne);
-sessionRouter.delete("/:id", SessionController.deleteAsession);
+sessionRouter.post("/request",verifyToken,verifyAccess("user"),SessionController.request);
+sessionRouter.get("/all",verifyToken,verifyAccess("user"),SessionController.getAll);
+sessionRouter.patch("/:id/status", verifyToken,verifyAccess("mentor"), SessionController.updateSessionStatus);
+sessionRouter.patch("/decline/:id/status", verifyToken,verifyAccess("mentor"), SessionController.updateSessionStatusDecl);
+sessionRouter.patch("/:id",verifyToken,verifyAccess("user"), SessionController.updateSession);
+sessionRouter.get("/:id",verifyToken,verifyAccess("user"), SessionController.getOne);
+sessionRouter.delete("/:id",verifyToken,verifyAccess("user"),SessionController.deleteAsession);
 export default sessionRouter;

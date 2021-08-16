@@ -27,5 +27,10 @@ class Validator{
 
         ];
     }
+    static checkId(){
+        return [
+            check("id","this is not a Mongo Id").isMongoId()
+        ]
+    }
 }
 export default Validator;

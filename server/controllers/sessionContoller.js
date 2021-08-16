@@ -1,7 +1,8 @@
 import SessionInfo from "../models/session.js";
 
 class SessionController{
-    static signup = async(req,res)=>{
+    static request = async(req,res)=>{
+        req.body.user=req.user.id;
         const session = await SessionInfo.create(req.body);
         if(!session){
             return res.status(400).json({
@@ -127,6 +128,7 @@ class SessionController{
             //data:deleted
         })
     }
+    
     
 }
 

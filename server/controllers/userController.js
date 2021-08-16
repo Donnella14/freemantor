@@ -1,33 +1,40 @@
 import UserInfo from "../models/userModel.js";
 import TokenAuth from "../helpers/TokenAuth.js";
-
+import bcrypt from "bcrypt";
 class UserController{
     static signinUser = async(req,res)=>{
         const {email,password} = req.body;
-        const user= await UserInfo.findOne({email: email, password: password});
+        const user= await UserInfo.findOne({email: email});
         if (!user){
             return res.status(400).json({
                 status:400,
                 message:"not found"
             })
         }
-        const token = TokenAuth.tokenGenarator({
-            id:user._id,
-            email:user.email,
-            status:user.status,
-            role:user.role
-        }) 
-        return res.status(200).json({
-            status:200,
-            message:"sgnin successfully",
-            token:token,
-            data:user
-        })
+        if (bcrypt.compareSync(password,user.password)){
+            const token = TokenAuth.tokenGenarator({
+                id:user._id,
+                email:user.email,
+                status:user.status,
+                role:user.role
+            }) 
+            return res.status(200).json({
+                status:200,
+                message:"sgnin successfully",
+                token:token,
+                data:user
+            })
+
+        }
+       
 
 
     }
 
     static signupUser = async(req,res)=>{
+        const saltRounds=10;
+        const hashPassword= bcrypt.hashSync(req.body.password,saltRounds);
+        req.body.password=hashPassword;
         const user = await UserInfo.create(req.body);
         if(!user){
             return res.status(400).json({
@@ -127,6 +134,22 @@ class UserController{
                 data:updateUser
             })
         } 
+        static getAllMentors = async(req,res)=>{
+            const mentor = await UserInfo.find({role:"mentor"});
+            if(!mentor){
+                return res.status(400).json({
+                    status:400,
+                    message:"failed to get all mentors"
+                })
+            
+            }
+            return res.status(200).json({
+                status:200,
+                message:"success",
+                data:mentor
+            })
+        }
+        
 }
 
 
