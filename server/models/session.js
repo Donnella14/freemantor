@@ -5,8 +5,8 @@ const Session = new mongoose.Schema({
     description: String,
     user:{type:mongoose.Schema.ObjectId, ref:"User"},
     mentor:{type:mongoose.Schema.ObjectId, ref:"User"},
-    timeToStart:String,
-    timeToEnd:String,
+    timeToStart:Date,
+    timeToEnd:Date,
     status:{
         type:String,
         enum:["appending","approve","decline"], default:"appending"}
