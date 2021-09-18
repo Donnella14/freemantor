@@ -128,6 +128,21 @@ class SessionController{
             //data:deleted
         })
     }
+    static getAllSessionsOne = async(req,res)=>{
+        const sessions = await SessionInfo.find({user:req.user.id});
+        if(!sessions ){
+            return res.status(400).json({
+                status:400,
+                message:"failed to get all "
+            })
+        
+        }
+        return res.status(200).json({
+            status:200,
+            message:"success",
+            data:sessions
+        })
+    }
     
     
 }
