@@ -140,7 +140,7 @@ class SessionController{
         return res.status(200).json({
             status:200,
             message:"success",
-            data:sessions 
+            data:sessions
         })
     }
     
