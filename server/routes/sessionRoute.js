@@ -10,4 +10,5 @@ sessionRouter.patch("/decline/:id/status", verifyToken,verifyAccess("mentor"), S
 sessionRouter.patch("/:id",verifyToken,verifyAccess("user"), SessionController.updateSession);
 sessionRouter.get("/:id",verifyToken,verifyAccess("user"), SessionController.getOne);
 sessionRouter.delete("/:id",verifyToken,verifyAccess("user"),SessionController.deleteAsession);
+sessionRouter.get("/:id/session",verifyToken,verifyAccess("user"),SessionController.getAllSessionsOne);
 export default sessionRouter;
