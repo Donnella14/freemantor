@@ -9,8 +9,8 @@ import cors from "cors";
 dotenv.config({path:'./.env'});
 
 const app = express();
-app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.json());
 app.use("/freemantor/v1/user", userRouter);
 app.use("/freemantor/v1/session", sessionRouter);
 
