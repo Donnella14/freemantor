@@ -4,12 +4,13 @@ import dotenv from "dotenv";
 import userRouter from "./server/routes/userRoute.js";
 import bodyParser from "body-parser";
 import sessionRouter from "./server/routes/sessionRoute.js";
+import cors from "cors";
 
 dotenv.config({path:'./.env'});
 
 const app = express();
 app.use(bodyParser.json());
-
+app.use(cors());
 app.use("/freemantor/v1/user", userRouter);
 app.use("/freemantor/v1/session", sessionRouter);
 
