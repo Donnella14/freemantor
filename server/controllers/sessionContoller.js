@@ -7,7 +7,7 @@ class SessionController{
         if(!session){
             return res.status(400).json({
                 status:400,
-                message:"failed to register"
+                message:"failed to register new session"
             })
         
         }
