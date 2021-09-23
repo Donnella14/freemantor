@@ -5,12 +5,14 @@ class UserController{
     static signinUser = async(req,res)=>{
         const {email,password} = req.body;
         const user= await UserInfo.findOne({email: email});
+        console.log(user);
         if (!user){
             return res.status(400).json({
                 status:400,
-                message:"not found"
+                message:"email not found"
             })
         }
+
         if (bcrypt.compareSync(password,user.password)){
             const token = TokenAuth.tokenGenarator({
                 id:user._id,
@@ -20,11 +22,18 @@ class UserController{
             }) 
             return res.status(200).json({
                 status:200,
-                message:"sgnin successfully",
+                message:"signin successfully",
                 token:token,
                 data:user
             })
 
+        }
+        else{
+            return res.status(400).json({
+                status:400,
+                message:"password not found"
+            })
+            
         }
        
 
